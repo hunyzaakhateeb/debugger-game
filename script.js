@@ -416,11 +416,10 @@ const AVAILABLE_LANGUAGES = [
 ];
 
 const SPEED_POINTS = (secondsLeft, roundStartSeconds) => {
-  const elapsed = roundStartSeconds - secondsLeft;
-
-  if (elapsed <= 5) return 5;
-  if (elapsed <= 10) return 3;
-  if (elapsed <= 20) return 1;
+  const ratio = secondsLeft / roundStartSeconds;
+  if (ratio >= 0.75) return 5;
+  if (ratio >= 0.40) return 3;
+  if (ratio > 0) return 1;
   return 0;
 };
 
@@ -770,7 +769,7 @@ function startTimer(seconds) {
         checkLivesOrContinue();
       }, 900);
     }
-  }, 700);
+  }, 1000);
 }
 
 function stopTimer() {
@@ -793,6 +792,8 @@ function gameOver(clearedAllRounds) {
 
   saveScore(score);
   renderScores();
+
+  finalScoreDisplay.textContent = score;
 
   gameScreen.classList.add("hidden");
   scoreScreen.classList.remove("hidden");
