@@ -1,131 +1,419 @@
-const SNIPPETS = [
-  {
-    code: `int main() {
+// Language-specific snippets
+const SNIPPETS_BY_LANGUAGE = {
+  javascript: [
+    {
+      code: `let names = ["Riya", "Sam", "Asha"];
+console.log(names[3]);`,
+      bugType: "Wrong index (out-of-range)",
+      options: [
+        "Type mismatch",
+        "Null reference",
+        "Wrong index (out-of-range)",
+        "Missing loop",
+      ],
+    },
+    {
+      code: `const num = "42";
+let total = num + 8;
+console.log(total);`,
+      bugType: "Wrong data type",
+      options: [
+        "Missing semicolon",
+        "Wrong data type",
+        "Undeclared variable",
+        "Wrong operator",
+      ],
+    },
+    {
+      code: `if (user = null) {
+  console.log("No user");
+}`,
+      bugType: "Assignment instead of comparison",
+      options: [
+        "Assignment instead of comparison",
+        "Missing semicolon",
+        "Wrong data type",
+        "Undefined variable",
+      ],
+    },
+    {
+      code: `function greet(name) {
+  console.log("Hello " + Name);
+}`,
+      bugType: "Incorrect variable name",
+      options: [
+        "Missing return",
+        "Incorrect variable name",
+        "Wrong data type",
+        "Wrong operator",
+      ],
+    },
+    {
+      code: `if (x > 10)
+  console.log("big");
+console.log("done");`,
+      bugType: "Missing braces",
+      options: [
+        "Missing semicolon",
+        "Wrong operator",
+        "Missing braces",
+        "Off-by-one error",
+      ],
+    },
+    {
+      code: `let obj = {a:1, b:2}
+console.log(obj["c"].toString());`,
+      bugType: "Null / undefined property access",
+      options: [
+        "Wrong index",
+        "Missing property",
+        "Null / undefined property access",
+        "Type mismatch",
+      ],
+    },
+    {
+      code: `const arr = [1, 2, 3];
+for (let i = 0; i <= arr.length; i++) {
+  console.log(arr[i]);
+}`,
+      bugType: "Off-by-one error",
+      options: [
+        "Infinite loop",
+        "Off-by-one error",
+        "Missing initialization",
+        "Type error",
+      ],
+    },
+    {
+      code: `let x = [1, 2, 3];
+x.map(item => item * 2)
+console.log(x);`,
+      bugType: "Missing assignment",
+      options: [
+        "Type error",
+        "Missing semicolon",
+        "Missing assignment",
+        "Wrong method",
+      ],
+    },
+  ],
+  c: [
+    {
+      code: `int main() {
   int i = 0;
   for (i = 0; i < 10; i++);
     printf("%d", i);
   return 0;
 }`,
-    bugType: "Stray semicolon causing empty loop",
-    options: [
-      "Missing semicolon",
-      "Wrong loop condition",
-      "Off-by-one error",
-      "Stray semicolon causing empty loop",
-    ],
-  },
-  {
-    code: `let names = ["Riya", "Sam", "Asha"];
-console.log(names[3]);`,
-    bugType: "Wrong index (out-of-range)",
-    options: [
-      "Type mismatch",
-      "Null reference",
-      "Wrong index (out-of-range)",
-      "Missing loop",
-    ],
-  },
-  {
-    code: `const num = "42";
-let total = num + 8;
-console.log(total);`,
-    bugType: "Wrong data type",
-    options: [
-      "Missing semicolon",
-      "Wrong data type",
-      "Undeclared variable",
-      "Wrong operator",
-    ],
-  },
-  {
-    code: `for (let i = 0; i <= arr.length; i++) {
-  sum += arr[i];
-}`,
-    bugType: "Off-by-one error",
-    options: [
-      "Infinite loop",
-      "Off-by-one error",
-      "Missing initialization",
-      "Wrong operator",
-    ],
-  },
-  {
-    code: `if (user = null) {
-  console.log("No user");
-}`,
-    bugType: "Assignment instead of comparison",
-    options: [
-      "Assignment instead of comparison",
-      "Missing semicolon",
-      "Wrong data type",
-      "Undefined variable",
-    ],
-  },
-  {
-    code: `function greet(name) {
-  console.log("Hello " + Name);
-}`,
-    bugType: "Incorrect variable name",
-    options: [
-      "Missing return",
-      "Incorrect variable name",
-      "Wrong data type",
-      "Wrong operator",
-    ],
-  },
-  {
-    code: `int *p = malloc(sizeof(int)*5);
+      bugType: "Stray semicolon causing empty loop",
+      options: [
+        "Missing semicolon",
+        "Wrong loop condition",
+        "Off-by-one error",
+        "Stray semicolon causing empty loop",
+      ],
+    },
+    {
+      code: `int *p = malloc(sizeof(int)*5);
 free(p);
 *p = 10;`,
-    bugType: "Use after free",
-    options: [
-      "Memory leak",
-      "Use after free",
-      "Null pointer dereference",
-      "Buffer overflow",
-    ],
-  },
-  {
-    code: `let obj = {a:1, b:2}
-console.log(obj["c"].toString());`,
-    bugType: "Null / undefined property access",
-    options: [
-      "Wrong index",
-      "Missing property",
-      "Null / undefined property access",
-      "Type mismatch",
-    ],
-  },
-  {
-    code: `if (x > 10)
-  console.log("big");
-console.log("done");`,
-    bugType: "Missing braces",
-    options: [
-      "Missing semicolon",
-      "Wrong operator",
-      "Missing braces",
-      "Off-by-one error",
-    ],
-  },
-  {
-    code: `String s = null;
-if (s.equals("ok")) System.out.println("yes");`,
-    bugType: "Null pointer dereference",
-    options: [
-      "Null pointer dereference",
-      "Wrong operator",
-      "Missing import",
-      "Type mismatch",
-    ],
-  },
-];
+      bugType: "Use after free",
+      options: [
+        "Memory leak",
+        "Use after free",
+        "Null pointer dereference",
+        "Buffer overflow",
+      ],
+    },
+    {
+      code: `char *str = "hello";
+str[0] = 'H';
+printf("%s", str);`,
+      bugType: "String literal modification",
+      options: [
+        "Memory leak",
+        "Wrong syntax",
+        "String literal modification",
+        "Undefined variable",
+      ],
+    },
+    {
+      code: `int arr[5];
+arr[5] = 10;
+printf("%d", arr[5]);`,
+      bugType: "Buffer overflow",
+      options: [
+        "Type mismatch",
+        "Off-by-one error",
+        "Buffer overflow",
+        "Missing initialization",
+      ],
+    },
+    {
+      code: `int *ptr;
+printf("%d", *ptr);`,
+      bugType: "Uninitialized pointer dereference",
+      options: [
+        "Memory leak",
+        "Uninitialized pointer dereference",
+        "Type error",
+        "Wrong operator",
+      ],
+    },
+    {
+      code: `for (int i = 0; i < 10, i++) {
+  printf("%d", i);
+}`,
+      bugType: "Wrong operator in loop",
+      options: [
+        "Syntax error",
+        "Wrong operator in loop",
+        "Off-by-one error",
+        "Missing semicolon",
+      ],
+    },
+    {
+      code: `void swap(int a, int b) {
+  int temp = a;
+  a = b;
+  b = temp;
+}`,
+      bugType: "Pass by value (no effect)",
+      options: [
+        "Type error",
+        "Memory leak",
+        "Pass by value (no effect)",
+        "Infinite recursion",
+      ],
+    },
+    {
+      code: `int arr[] = {1, 2, 3};
+printf("%d", sizeof(arr) / sizeof(arr[0]));
+free(arr);`,
+      bugType: "Freeing stack-allocated memory",
+      options: [
+        "Syntax error",
+        "Off-by-one error",
+        "Freeing stack-allocated memory",
+        "Type mismatch",
+      ],
+    },
+  ],
+  python: [
+    {
+      code: `for i in range(5)
+    print(i)`,
+      bugType: "Incorrect indentation",
+      options: [
+        "Missing colon",
+        "Incorrect indentation",
+        "Wrong function name",
+        "Type error",
+      ],
+    },
+    {
+      code: `numbers = [1, 2, 3, 4, 5]
+print(numbers[5])`,
+      bugType: "Wrong index (out-of-range)",
+      options: [
+        "Type error",
+        "Wrong method",
+        "Wrong index (out-of-range)",
+        "Missing variable",
+      ],
+    },
+    {
+      code: `def greet(name):
+    print("Hello " + name + 1)`,
+      bugType: "Type error (string + int)",
+      options: [
+        "Syntax error",
+        "Type error (string + int)",
+        "Missing return",
+        "Undefined variable",
+      ],
+    },
+    {
+      code: `x = 10
+x = x + x
+print(x)
+print(y)`,
+      bugType: "Undefined variable",
+      options: [
+        "Type error",
+        "Indentation error",
+        "Undefined variable",
+        "Wrong operator",
+      ],
+    },
+    {
+      code: `my_dict = {"a": 1, "b": 2}
+print(my_dict["c"])`,
+      bugType: "Key not found",
+      options: [
+        "Type error",
+        "Syntax error",
+        "Key not found",
+        "Wrong method",
+      ],
+    },
+    {
+      code: `x = [1, 2, 3]
+x.append(4)
+print(x)`,
+      bugType: "No bug",
+      options: [
+        "Type error",
+        "No bug",
+        "Wrong method",
+        "Indentation error",
+      ],
+    },
+    {
+      code: `def factorial(n):
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+print(factorial(5))`,
+      bugType: "No bug (but could timeout)",
+      options: [
+        "Infinite recursion",
+        "No bug (but could timeout)",
+        "Type error",
+        "Missing return",
+      ],
+    },
+    {
+      code: `for i in [1, 2, 3]:
+    i = i * 2
+print(i)`,
+      bugType: "Loop variable doesn't affect original list",
+      options: [
+        "Syntax error",
+        "Loop variable doesn't affect original list",
+        "Type error",
+        "Indentation error",
+      ],
+    },
+  ],
+  java: [
+    {
+      code: `String s = null;
+if (s.equals("ok")) 
+    System.out.println("yes");`,
+      bugType: "Null pointer dereference",
+      options: [
+        "Null pointer dereference",
+        "Wrong operator",
+        "Missing import",
+        "Type mismatch",
+      ],
+    },
+    {
+      code: `int[] arr = new int[5];
+for (int i = 0; i <= 5; i++) {
+    arr[i] = i;
+}`,
+      bugType: "Array out of bounds",
+      options: [
+        "Type error",
+        "Array out of bounds",
+        "Infinite loop",
+        "Syntax error",
+      ],
+    },
+    {
+      code: `public class Test {
+    public void display() {
+        System.out.println(this);
+    }
+}`,
+      bugType: "No bug",
+      options: [
+        "Missing return",
+        "Type error",
+        "No bug",
+        "Wrong method",
+      ],
+    },
+    {
+      code: `List list = new ArrayList();
+list.add("hello");
+String s = (String) list.get(1);`,
+      bugType: "Wrong index (out-of-bounds)",
+      options: [
+        "Type cast error",
+        "Wrong index (out-of-bounds)",
+        "Missing import",
+        "Null reference",
+      ],
+    },
+    {
+      code: `int x = 10;
+int y = x / 0;
+System.out.println(y);`,
+      bugType: "Division by zero",
+      options: [
+        "Type error",
+        "Division by zero",
+        "Syntax error",
+        "Variable shadowing",
+      ],
+    },
+    {
+      code: `static int value = 0;
+public void increment() {
+    value++;
+}`,
+      bugType: "No bug (static is fine here)",
+      options: [
+        "Thread safety issue",
+        "Memory leak",
+        "No bug (static is fine here)",
+        "Missing return",
+      ],
+    },
+    {
+      code: `String str = "Java";
+str.replace("J", "P");
+System.out.println(str);`,
+      bugType: "String immutability (missing assignment)",
+      options: [
+        "Type error",
+        "String immutability (missing assignment)",
+        "Wrong method",
+        "Null reference",
+      ],
+    },
+    {
+      code: `for (int i = 0; i < 10; i++);
+    System.out.println(i);`,
+      bugType: "Empty loop (stray semicolon)",
+      options: [
+        "Type error",
+        "Empty loop (stray semicolon)",
+        "Variable scope",
+        "Syntax error",
+      ],
+    },
+  ],
+};
+
+// Create a flattened snippets array (for backward compatibility)
+const SNIPPETS = Object.values(SNIPPETS_BY_LANGUAGE).flat();
 
 
 const ROUNDS_TOTAL = 8; 
 const MAX_LIVES = 2;
 
 const START_TIMERS = [25, 25, 20, 15, 12];
+
+const AVAILABLE_LANGUAGES = [
+  { id: "javascript", name: "JavaScript", icon: "JS" },
+  { id: "python", name: "Python", icon: "PY" },
+  { id: "java", name: "Java", icon: "JV" },
+  { id: "c", name: "C", icon: "C" },
+];
 
 const SPEED_POINTS = (secondsLeft, roundStartSeconds) => {
   const ratio = secondsLeft / roundStartSeconds;
@@ -139,6 +427,7 @@ const SPEED_POINTS = (secondsLeft, roundStartSeconds) => {
 const startBtn = document.getElementById("startBtn");
 const viewScoresBtn = document.getElementById("viewScoresBtn");
 const playerNameInput = document.getElementById("playerName");
+const languageSelect = document.getElementById("languageSelect");
 
 const startScreen = document.getElementById("startScreen");
 const gameScreen = document.getElementById("gameScreen");
@@ -154,6 +443,7 @@ const quitBtn = document.getElementById("quitBtn");
 const feedbackEl = document.getElementById("feedback");
 const livesDisplay = document.getElementById("livesDisplay");
 const scoreDisplay = document.getElementById("scoreDisplay");
+const languageDisplay = document.getElementById("languageDisplay");
 const roundDisplay = document.getElementById("roundDisplay");
 const highscoreDisplay = document.getElementById("highscoreDisplay");
 
@@ -170,6 +460,7 @@ const clearScoresBtn = document.getElementById("clearScoresBtn");
 let shuffledSnippets = [];
 let currentRoundIndex = 0;
 let currentSnippet = null;
+let selectedLanguage = "javascript"; // Add language selection
 
 let lives = MAX_LIVES;
 let score = 0;
@@ -221,7 +512,7 @@ function sfxTick() {
 }
 
 function pickRounds(count) {
-  const pool = [...SNIPPETS];
+  const pool = [...(SNIPPETS_BY_LANGUAGE[selectedLanguage] || SNIPPETS)];
   const result = [];
 
   while (result.length < count && pool.length > 0) {
@@ -260,6 +551,11 @@ function updateHighscoreUI() {
   highscoreDisplay.textContent = String(scoreboard[0].score);
 }
 
+function updateLanguageUI() {
+  const langName = AVAILABLE_LANGUAGES.find(l => l.id === selectedLanguage)?.name || "JavaScript";
+  languageDisplay.textContent = langName;
+}
+
 function setFeedback(message = "", type = "") {
   feedbackEl.textContent = message;
   feedbackEl.classList.remove("correct", "wrong");
@@ -269,6 +565,7 @@ function setFeedback(message = "", type = "") {
 
 startBtn.addEventListener("click", () => {
   playerName = (playerNameInput.value || "").trim() || "Player";
+  selectedLanguage = languageSelect.value || "javascript";
   startGame();
 });
 
@@ -279,6 +576,7 @@ playAgainBtn.addEventListener("click", () => {
   gameScreen.classList.remove("hidden");
 
   playerName = (playerNameInput.value || "").trim() || "Player";
+  selectedLanguage = languageSelect.value || "javascript";
   startGame();
 });
 
@@ -336,6 +634,7 @@ function startGame() {
 
   updateLivesUI();
   updateScoreUI();
+  updateLanguageUI();
   updateRoundUI();
 
   nextRound();
